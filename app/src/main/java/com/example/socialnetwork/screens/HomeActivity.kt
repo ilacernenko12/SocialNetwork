@@ -25,11 +25,16 @@ import java.io.File
 import android.Manifest
 import android.util.Log
 import android.view.View
+import android.widget.LinearLayout
 import androidx.camera.core.CameraSelector
 import androidx.camera.core.Preview
 import androidx.camera.lifecycle.ProcessCameraProvider
-import androidx.core.content.ContextCompat.startActivity
 import androidx.core.net.toUri
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.example.socialnetwork.database.entity.PhotoModel
+import com.example.socialnetwork.databinding.ChoosePostDialogBinding
+import com.example.socialnetwork.recyclerview.PhotoAdapter
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 
@@ -39,8 +44,10 @@ class HomeActivity : AppCompatActivity(R.layout.activity_home) {
     private val viewModel: HomeViewModel by viewModels()
     private lateinit var cameraExecutor: ExecutorService
     private lateinit var imageCapture: ImageCapture
+    private lateinit var photoAdapter: PhotoAdapter
     private val REQUEST_IMAGE_GALLERY = 1
     private val CAMERA_PERMISSION_REQUEST_CODE = 2
+    private var isChangeAvatar = false
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -52,40 +59,37 @@ class HomeActivity : AppCompatActivity(R.layout.activity_home) {
 
         observeUsername()
         observeAvatar()
-        registerBottomNavigationBar()
+        observePhotos()
 
-        binding.apply {
-            ivUserAvatar.setOnClickListener {
-                showDialogChangeAvatar()
-            }
-        }
+        registerBottomNavigationBar()
+        registerRecyclerView()
+
+        setOnClickListeners()
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == REQUEST_IMAGE_GALLERY && resultCode == Activity.RESULT_OK && data != null) {
             val selectedImageUri: Uri? = data.data
+            val photo = selectedImageUri.toString()
+            viewModel.insertPhoto(PhotoModel(imagePath = photo))
 
-            // Загрузка изображения с помощью Glide
-            Glide.with(this)
-                .load(selectedImageUri)
-                .into(binding.ivUserAvatar)
+            if (isChangeAvatar) {
+                // Загрузка изображения с помощью Glide
+                Glide.with(this)
+                    .load(selectedImageUri)
+                    .into(binding.ivUserAvatar)
 
-            // Сохранение изображения в базе данных
-            val imageModel = AvatarModel(imagePath = selectedImageUri.toString())
-            viewModel.saveAvatar(imageModel)
+                isChangeAvatar = false
+                // Сохранение изображения в базе данных
+                viewModel.saveAvatar(AvatarModel(imagePath = selectedImageUri.toString()))
+            }
         }
     }
 
     private fun openGallery() {
         val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
         startActivityForResult(intent, REQUEST_IMAGE_GALLERY)
-    }
-
-
-    private fun createTempImageFile(): File {
-        val storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES)
-        return File.createTempFile("IMG_", ".jpg", storageDir)
     }
 
 
@@ -101,27 +105,31 @@ class HomeActivity : AppCompatActivity(R.layout.activity_home) {
             )
         )
         dialog.show()
-        dialogBinding.btnChooseGallery.setOnClickListener {
-            openGallery()
-            dialog.cancel()
-        }
-        dialogBinding.btnChooseCamera.setOnClickListener {
-            binding.previewView.visibility = View.VISIBLE
-            binding.captureButton.visibility = View.VISIBLE
-            binding.bottomNavigationView.visibility = View.GONE
-            binding.captureButton.setOnClickListener {
-                takePhoto()
+        dialogBinding.apply {
+            btnChooseGallery.setOnClickListener {
+                isChangeAvatar = true
+                openGallery()
+                dialog.cancel()
             }
-            if (allPermissionsGranted()) {
-                startCamera()
-            } else {
-                ActivityCompat.requestPermissions(
-                    this,
-                    arrayOf(Manifest.permission.CAMERA),
-                    CAMERA_PERMISSION_REQUEST_CODE
-                )
+            btnChooseCamera.setOnClickListener {
+                isChangeAvatar = true
+                binding.previewView.visibility = View.VISIBLE
+                binding.captureButton.visibility = View.VISIBLE
+                binding.bottomNavigationView.visibility = View.GONE
+                binding.captureButton.setOnClickListener {
+                    takePhoto()
+                }
+                if (allPermissionsGranted()) {
+                    startCamera()
+                } else {
+                    ActivityCompat.requestPermissions(
+                        this@HomeActivity,
+                        arrayOf(Manifest.permission.CAMERA),
+                        CAMERA_PERMISSION_REQUEST_CODE
+                    )
+                }
+                dialog.cancel()
             }
-            dialog.cancel()
         }
     }
 
@@ -160,8 +168,10 @@ class HomeActivity : AppCompatActivity(R.layout.activity_home) {
                     val savedUri = outputFileResults.savedUri ?: photoFile.toUri()
                     val imagePath = savedUri.toString()
 
-                    // Сохраняем изображение в Room базе данных
+                    // Сохраняем автар в Room базе данных
                     viewModel.saveAvatar(AvatarModel(imagePath = imagePath))
+                    // И сразу же сохраняем его во все фотографии
+                    viewModel.insertPhoto(PhotoModel(imagePath = imagePath))
                     binding.previewView.visibility = View.GONE
                     binding.captureButton.visibility = View.GONE
                     binding.bottomNavigationView.visibility = View.VISIBLE
@@ -201,6 +211,12 @@ class HomeActivity : AppCompatActivity(R.layout.activity_home) {
         }
     }
 
+    private fun observePhotos() {
+        viewModel.photos.observe(this) { photos ->
+            photoAdapter.submitList(photos)
+        }
+    }
+
     private fun initCameraX(): ExecutorService = Executors.newSingleThreadExecutor()
     private fun initImageCapture(): ImageCapture = ImageCapture.Builder().build()
 
@@ -229,6 +245,51 @@ class HomeActivity : AppCompatActivity(R.layout.activity_home) {
                     true
                 }
                 else -> false
+            }
+        }
+    }
+
+    private fun setOnClickListeners() {
+        binding.apply {
+            ivUserAvatar.setOnClickListener {
+                showDialogChangeAvatar()
+            }
+
+            btnAddPost.setOnClickListener {
+                showDialogChoosePost()
+            }
+        }
+    }
+
+    private fun registerRecyclerView() {
+        photoAdapter = PhotoAdapter()
+        // Настройка RecyclerView
+        binding.recyclerView.apply {
+            layoutManager = LinearLayoutManager(this@HomeActivity, RecyclerView.HORIZONTAL, false)
+            adapter = photoAdapter
+        }
+    }
+    private fun showDialogChoosePost() {
+        val dialogBinding = ChoosePostDialogBinding.inflate(layoutInflater)
+        val dialog = AlertDialog.Builder(this)
+            .setView(dialogBinding.root)
+            .create()
+        dialog.window?.setBackgroundDrawable(
+            ContextCompat.getDrawable(
+                this,
+                R.drawable.dialog_shape
+            )
+        )
+        dialog.show()
+
+        dialogBinding.apply {
+            btnAddPhoto.setOnClickListener {
+                openGallery()
+                dialog.cancel()
+            }
+
+            btnWritePost.setOnClickListener {
+
             }
         }
     }

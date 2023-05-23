@@ -4,7 +4,7 @@ import android.app.Application
 import androidx.lifecycle.*
 import com.example.socialnetwork.SocialNetworkApp
 import com.example.socialnetwork.database.entity.UserEntity
-import com.example.socialnetwork.database.repository_impl.UserRepositoryImpl
+import com.example.socialnetwork.database.repository.impl.UserRepositoryImpl
 import kotlinx.coroutines.launch
 
 class RegistrationViewModel(application: Application) : AndroidViewModel(application) {
@@ -31,12 +31,6 @@ class RegistrationViewModel(application: Application) : AndroidViewModel(applica
         } else {
             _registrationStatus.value = false
         }
-    }
-
-    private fun validateInput(username: String, password: String, email: String): Boolean {
-        // Проверка на правильность введенных данных
-
-        return true
     }
 
     private fun isUsernameValid(username: String): Boolean {

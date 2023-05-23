@@ -1,4 +1,4 @@
-package com.example.socialnetwork.database.repository_impl
+package com.example.socialnetwork.database.repository.impl
 
 import androidx.lifecycle.LiveData
 import com.example.socialnetwork.database.dao.AvatarDao
