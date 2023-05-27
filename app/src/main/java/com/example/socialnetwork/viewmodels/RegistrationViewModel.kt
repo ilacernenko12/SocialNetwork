@@ -10,6 +10,7 @@ import kotlinx.coroutines.launch
 class RegistrationViewModel(application: Application) : AndroidViewModel(application) {
 
     private val repository: UserRepositoryImpl = UserRepositoryImpl(SocialNetworkApp.room.userDao)
+
     private val _registrationStatus = MutableLiveData<Boolean>()
     val registrationStatus: LiveData<Boolean> = _registrationStatus
 

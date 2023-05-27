@@ -7,7 +7,6 @@ import android.content.pm.PackageManager
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.os.Environment
 import android.provider.MediaStore
 import androidx.activity.viewModels
 import androidx.camera.core.ImageCapture
@@ -25,7 +24,6 @@ import java.io.File
 import android.Manifest
 import android.util.Log
 import android.view.View
-import android.widget.LinearLayout
 import androidx.camera.core.CameraSelector
 import androidx.camera.core.Preview
 import androidx.camera.lifecycle.ProcessCameraProvider
@@ -60,6 +58,9 @@ class HomeActivity : AppCompatActivity(R.layout.activity_home) {
         observeUsername()
         observeAvatar()
         observePhotos()
+        observeShortBio()
+        observeAge()
+        observeCity()
 
         registerBottomNavigationBar()
         registerRecyclerView()
@@ -217,6 +218,24 @@ class HomeActivity : AppCompatActivity(R.layout.activity_home) {
         }
     }
 
+    private fun observeShortBio() {
+        viewModel.shortBio.observe(this) { shrotBio ->
+            binding.tvShortBio.text = shrotBio
+        }
+    }
+
+    private fun observeAge() {
+        viewModel.age.observe(this) { age ->
+            binding.tvAge.text = age
+        }
+    }
+
+    private fun observeCity() {
+        viewModel.city.observe(this) { city ->
+            binding.tvCity.text = city
+        }
+    }
+
     private fun initCameraX(): ExecutorService = Executors.newSingleThreadExecutor()
     private fun initImageCapture(): ImageCapture = ImageCapture.Builder().build()
 
@@ -258,6 +277,10 @@ class HomeActivity : AppCompatActivity(R.layout.activity_home) {
             btnAddPost.setOnClickListener {
                 showDialogChoosePost()
             }
+
+            btnPersonalInfo.setOnClickListener {
+                AddPersonalInfoFragment().show(supportFragmentManager, "newTaskTag")
+            }
         }
     }
 
@@ -269,6 +292,7 @@ class HomeActivity : AppCompatActivity(R.layout.activity_home) {
             adapter = photoAdapter
         }
     }
+
     private fun showDialogChoosePost() {
         val dialogBinding = ChoosePostDialogBinding.inflate(layoutInflater)
         val dialog = AlertDialog.Builder(this)
