@@ -25,6 +25,23 @@ class RegisterActivity : AppCompatActivity(R.layout.activity_register) {
             finish()
         }
 
+        observeRegistrationStatus()
+        setOnClickListener()
+    }
+
+    private fun setOnClickListener() {
+        binding.apply {
+            btnRegister.setOnClickListener {
+                val username = etUsername.text.toString()
+                val password = etPassword.text.toString()
+                val email = etEmail.text.toString()
+
+                viewModel.registerUser(username, email, password)
+            }
+        }
+    }
+
+    private fun observeRegistrationStatus() {
         // Наблюдение за изменениями статуса регистрации
         viewModel.registrationStatus.observe(this) { isSuccess ->
             if (isSuccess) {
@@ -40,16 +57,6 @@ class RegisterActivity : AppCompatActivity(R.layout.activity_register) {
                     ViewUtils.clearField(etPassword)
                     ViewUtils.clearField(etEmail)
                 }
-            }
-        }
-
-        binding.apply {
-            btnRegister.setOnClickListener {
-                val username = etUsername.text.toString()
-                val password = etPassword.text.toString()
-                val email = etEmail.text.toString()
-
-                viewModel.registerUser(username, email, password)
             }
         }
     }
