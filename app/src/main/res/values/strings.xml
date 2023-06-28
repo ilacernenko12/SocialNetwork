@@ -6,4 +6,24 @@
     <string name="age">Age</string>
     <string name="city">City</string>
     <string name="save">Save</string>
+    <string name="username">Username</string>
+    <string name="add_personal_information">Add personal information</string>
+    <string name="post">Post</string>
+    <string name="_0_friends">0 friends</string>
+    <string name="photos">Photos</string>
+    <string name="all_posts">All posts</string>
+    <string name="take">Take</string>
+    <string name="photo">Photo</string>
+    <string name="upload_from_device">Upload from device</string>
+    <string name="take_photo">Take Photo</string>
+    <string name="choose_an_action">Choose an action</string>
+    <string name="add_photo">Add photo</string>
+    <string name="write_post">Write post</string>
+    <string name="russian">Russian</string>
+    <string name="english">English</string>
+    <string name="home">Home</string>
+    <string name="feed">Feed</string>
+    <string name="chat">Chat</string>
+    <string name="setting">Setting</string>
+    <string name="about_app">About App</string>
 </resources>

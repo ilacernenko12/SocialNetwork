@@ -28,11 +28,14 @@ import androidx.camera.core.CameraSelector
 import androidx.camera.core.Preview
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.core.net.toUri
+import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.socialnetwork.database.entity.PhotoModel
 import com.example.socialnetwork.databinding.ChoosePostDialogBinding
 import com.example.socialnetwork.recyclerview.PhotoAdapter
+import com.example.socialnetwork.utils.LocaleHelper
+import java.util.*
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 
@@ -66,6 +69,7 @@ class HomeActivity : AppCompatActivity(R.layout.activity_home) {
         registerRecyclerView()
 
         setOnClickListeners()
+        LocaleHelper.checkLocale(this)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -257,6 +261,7 @@ class HomeActivity : AppCompatActivity(R.layout.activity_home) {
                 }
                 R.id.navigation_setting -> {
                     // Обработка нажатия на элемент Notifications
+                    switchFragment(SettingFragment())
                     true
                 }
                 R.id.navigation_about -> {
@@ -316,6 +321,13 @@ class HomeActivity : AppCompatActivity(R.layout.activity_home) {
 
             }
         }
+    }
+
+    private fun switchFragment(fragment: Fragment) {
+        supportFragmentManager.beginTransaction()
+            .replace(R.id.fragmentContainer, fragment)
+            .addToBackStack(null)
+            .commit()
     }
 
     @Deprecated("Deprecated in Java")

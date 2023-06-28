@@ -46,7 +46,7 @@ class HomeViewModel(application: Application) : AndroidViewModel(application) {
         loadUsername()
         loadAvatar()
         loadPhotos()
-        loadUserInfo()
+//        loadUserInfo()
     }
 
     private fun loadAvatar() {

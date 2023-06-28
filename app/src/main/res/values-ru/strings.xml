@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Мессенджер</string>
+    <string name="hello_blank_fragment">ХУЙ</string>
+    <string name="personal_information">Личная информация</string>
+    <string name="short_biography">О себе</string>
+    <string name="age">Возраст</string>
+    <string name="city">Город</string>
+    <string name="save">Сохранить</string>
+    <string name="username">Пользователь</string>
+    <string name="add_personal_information">Добавить информацию о себе</string>
+    <string name="post">Создать запись</string>
+    <string name="_0_friends">0 друзей</string>
+    <string name="photos">Фото</string>
+    <string name="all_posts">Мои записи</string>
+    <string name="take">Сфотографировать</string>
+    <string name="photo">Фото</string>
+    <string name="upload_from_device">Загрузить из галереи</string>
+    <string name="take_photo">Сделать фото</string>
+    <string name="choose_an_action">Выберите действие</string>
+    <string name="add_photo">Все фото</string>
+    <string name="write_post">Написать пост</string>
+    <string name="russian">Русский</string>
+    <string name="english">Английский</string>
+    <string name="home">Главная</string>
+    <string name="feed">Новости</string>
+    <string name="chat">Чат</string>
+    <string name="setting">Настройки</string>
+    <string name="about_app">О приложении</string>
+</resources>
