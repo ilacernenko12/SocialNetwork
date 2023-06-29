@@ -10,7 +10,9 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.app.ActivityCompat.recreate
 import androidx.fragment.app.viewModels
+import com.example.socialnetwork.SocialNetworkApp
 import com.example.socialnetwork.databinding.FragmentSettingBinding
+import com.example.socialnetwork.utils.ThemeManager
 import com.example.socialnetwork.viewmodels.SettingViewModel
 import java.util.*
 
@@ -19,10 +21,12 @@ class SettingFragment : Fragment() {
     private lateinit var binding: FragmentSettingBinding
     private val viewModel: SettingViewModel by viewModels()
     private lateinit var sharedPreferences: SharedPreferences
+    private lateinit var themeManager: ThemeManager
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         sharedPreferences = requireContext().getSharedPreferences("language", MODE_PRIVATE)
+        themeManager = (requireActivity().application as SocialNetworkApp).themeManager
     }
 
     override fun onCreateView(
@@ -41,6 +45,14 @@ class SettingFragment : Fragment() {
             }
             btnSwitchEnglish.setOnClickListener {
                 changeLanguage("en")
+            }
+            btnLightTheme.setOnClickListener {
+                themeManager.setLightTheme()
+                requireActivity().recreate()
+            }
+            btnDarkTheme.setOnClickListener {
+                themeManager.setDarkTheme()
+                requireActivity().recreate()
             }
         }
     }

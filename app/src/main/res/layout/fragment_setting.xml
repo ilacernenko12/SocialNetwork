@@ -7,12 +7,23 @@
     android:orientation="vertical"
     tools:context=".screens.SettingFragment">
 
+    <TextView
+        android:id="@+id/tvUsername"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="10dp"
+        android:fontFamily="@font/spinnaker"
+        android:text="Language"
+        android:textColor="@color/black"
+        android:textSize="24sp" />
+
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/btnSwitchRussian"
+        style="@style/button_shape"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
-        android:background="@drawable/button_shape"
         android:fontFamily="@font/spinnaker"
         android:text="@string/russian"
         android:textSize="16sp" />
@@ -25,6 +36,26 @@
         android:background="@drawable/button_shape"
         android:fontFamily="@font/spinnaker"
         android:text="@string/english"
+        android:textSize="16sp" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btnLightTheme"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/button_shape"
+        android:fontFamily="@font/spinnaker"
+        android:text="@string/light_theme"
+        android:textSize="16sp" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btnDarkTheme"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/button_shape"
+        android:fontFamily="@font/spinnaker"
+        android:text="@string/dark_theme"
         android:textSize="16sp" />
 
 </LinearLayout>

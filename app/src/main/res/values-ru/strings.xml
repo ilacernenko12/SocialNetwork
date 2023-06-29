@@ -27,4 +27,6 @@
     <string name="chat">Чат</string>
     <string name="setting">Настройки</string>
     <string name="about_app">О приложении</string>
+    <string name="light_theme">Light theme</string>
+    <string name="dark_theme">Dark theme</string>
 </resources>
