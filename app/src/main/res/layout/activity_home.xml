@@ -44,7 +44,7 @@
                     android:layout_gravity="center"
                     android:layout_marginTop="10dp"
                     android:fontFamily="@font/spinnaker"
-                    android:text="Username"
+                    android:text="@string/username"
                     android:textColor="@color/black"
                     android:textSize="24sp" />
 
@@ -55,7 +55,7 @@
                     android:layout_gravity="center"
                     android:layout_marginTop="10dp"
                     android:fontFamily="@font/spinnaker"
-                    android:text="Add personal information"
+                    android:text="@string/add_personal_information"
                     android:textColor="#1F99FA"
                     android:textSize="16sp" />
 
@@ -66,7 +66,7 @@
                     android:layout_marginTop="10dp"
                     android:background="@drawable/button_shape"
                     android:fontFamily="@font/spinnaker"
-                    android:text="Post"
+                    android:text="@string/post"
                     android:textSize="16sp" />
             </LinearLayout>
 
@@ -86,9 +86,9 @@
                     android:layout_gravity="start"
                     android:layout_margin="5dp"
                     android:fontFamily="@font/spinnaker"
-                    android:text="0 friends"
+                    android:text="@string/_0_friends"
                     android:textColor="@color/black"
-                    android:textSize="18sp"/>
+                    android:textSize="18sp" />
             </LinearLayout>
 
             <LinearLayout
@@ -106,7 +106,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="5dp"
                     android:fontFamily="@font/spinnaker"
-                    android:text="Photos"
+                    android:text="@string/photos"
                     android:textColor="@color/black"
                     android:textSize="18sp" />
 
@@ -133,7 +133,7 @@
                     android:layout_gravity="start"
                     android:layout_margin="5dp"
                     android:fontFamily="@font/spinnaker"
-                    android:text="Short biography"
+                    android:text="@string/short_biography"
                     android:textColor="@color/black"
                     android:textSize="18sp"
                     android:textStyle="bold" />
@@ -155,7 +155,7 @@
                     android:layout_gravity="start"
                     android:layout_margin="5dp"
                     android:fontFamily="@font/spinnaker"
-                    android:text="Age"
+                    android:text="@string/age"
                     android:textColor="@color/black"
                     android:textSize="18sp"
                     android:textStyle="bold" />
@@ -177,7 +177,7 @@
                     android:layout_gravity="start"
                     android:layout_margin="5dp"
                     android:fontFamily="@font/spinnaker"
-                    android:text="City"
+                    android:text="@string/city"
                     android:textColor="@color/black"
                     android:textSize="18sp"
                     android:textStyle="bold" />
@@ -192,6 +192,7 @@
                     android:textColor="@color/black"
                     android:textSize="18sp" />
             </LinearLayout>
+
             <LinearLayout
                 android:id="@+id/friendsLayou1t"
                 android:layout_width="match_parent"
@@ -208,9 +209,9 @@
                     android:layout_gravity="start"
                     android:layout_margin="5dp"
                     android:fontFamily="@font/spinnaker"
-                    android:text="All posts"
+                    android:text="@string/all_posts"
                     android:textColor="@color/black"
-                    android:textSize="18sp"/>
+                    android:textSize="18sp" />
             </LinearLayout>
         </FrameLayout>
     </ScrollView>
@@ -226,11 +227,16 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
-        android:text="Take"
+        android:text="@string/take"
         android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
+
+    <FrameLayout
+        android:id="@+id/fragmentContainer"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottomNavigationView"

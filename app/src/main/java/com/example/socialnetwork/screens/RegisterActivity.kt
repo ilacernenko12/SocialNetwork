@@ -8,9 +8,11 @@ import androidx.activity.viewModels
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.example.socialnetwork.R
 import com.example.socialnetwork.databinding.ActivityRegisterBinding
+import com.example.socialnetwork.utils.LocaleHelper
 import com.example.socialnetwork.utils.ViewUtils
 import com.example.socialnetwork.viewmodels.RegistrationViewModel
 import com.google.android.material.snackbar.Snackbar
+import java.util.*
 
 class RegisterActivity : AppCompatActivity(R.layout.activity_register) {
 
@@ -27,6 +29,7 @@ class RegisterActivity : AppCompatActivity(R.layout.activity_register) {
 
         observeRegistrationStatus()
         setOnClickListener()
+        LocaleHelper.checkLocale(this)
     }
 
     private fun setOnClickListener() {
