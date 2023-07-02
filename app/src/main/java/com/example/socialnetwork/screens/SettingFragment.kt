@@ -2,31 +2,26 @@ package com.example.socialnetwork.screens
 
 import android.content.Context.MODE_PRIVATE
 import android.content.SharedPreferences
-import android.content.res.Configuration
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.app.ActivityCompat.recreate
 import androidx.fragment.app.viewModels
-import com.example.socialnetwork.SocialNetworkApp
 import com.example.socialnetwork.databinding.FragmentSettingBinding
-import com.example.socialnetwork.utils.ThemeManager
 import com.example.socialnetwork.viewmodels.SettingViewModel
-import java.util.*
 
 class SettingFragment : Fragment() {
 
     private lateinit var binding: FragmentSettingBinding
     private val viewModel: SettingViewModel by viewModels()
     private lateinit var sharedPreferences: SharedPreferences
-    private lateinit var themeManager: ThemeManager
+    private val RUSSIAN = "ru"
+    private val ENGLISH = "en"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         sharedPreferences = requireContext().getSharedPreferences("language", MODE_PRIVATE)
-        themeManager = (requireActivity().application as SocialNetworkApp).themeManager
     }
 
     override fun onCreateView(
@@ -34,44 +29,34 @@ class SettingFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentSettingBinding.inflate(inflater, container, false)
+        checkSwitcherPosition()
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.apply {
-            btnSwitchRussian.setOnClickListener {
-                changeLanguage("ru")
-            }
-            btnSwitchEnglish.setOnClickListener {
-                changeLanguage("en")
-            }
-            btnLightTheme.setOnClickListener {
-                themeManager.setLightTheme()
-                requireActivity().recreate()
-            }
-            btnDarkTheme.setOnClickListener {
-                themeManager.setDarkTheme()
-                requireActivity().recreate()
+            languageSwitcher.setOnCheckedChangeListener{ _, isChecked ->
+                viewModel.saveSwitchState("language_switcher",isChecked, requireContext())
+                if (isChecked) {
+                    viewModel.apply {
+                        changeLanguage("ru", requireContext())
+                        saveLanguageToPrefs(RUSSIAN, sharedPreferences)
+                    }
+                } else {
+                    viewModel.apply {
+                        changeLanguage("en", requireContext())
+                        saveLanguageToPrefs(ENGLISH, sharedPreferences)
+                    }
+                }
             }
         }
     }
 
-    private fun changeLanguage(languageCode: String) {
-        val context = requireContext().applicationContext
-        val locale = Locale(languageCode)
-        Locale.setDefault(locale)
-        val resources = context.resources
-        val configuration = Configuration(resources.configuration)
-        configuration.setLocale(locale)
-        resources.updateConfiguration(configuration, resources.displayMetrics)
-        saveLanguageToPrefs(languageCode, sharedPreferences)
-        requireActivity().recreate()
-    }
-
-    private fun saveLanguageToPrefs(language: String, sharedPreferences: SharedPreferences) {
-        sharedPreferences.edit()
-            .putString("selected_language", language)
-            .apply()
+    private fun checkSwitcherPosition() {
+        binding.languageSwitcher.isChecked = viewModel.restoreSwitchState("language_switcher", requireContext())
+        binding.themeSwitcher.isChecked = viewModel.restoreSwitchState("", requireContext())
+        binding.notificationSwitcher.isChecked = viewModel.restoreSwitchState("", requireContext())
+        binding.soundSwitcher.isChecked = viewModel.restoreSwitchState("", requireContext())
     }
 }

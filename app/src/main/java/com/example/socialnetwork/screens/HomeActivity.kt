@@ -29,12 +29,14 @@ import androidx.camera.core.Preview
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.core.net.toUri
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.socialnetwork.database.entity.PhotoModel
 import com.example.socialnetwork.databinding.ChoosePostDialogBinding
 import com.example.socialnetwork.recyclerview.PhotoAdapter
 import com.example.socialnetwork.utils.LocaleHelper
+import com.example.socialnetwork.viewmodels.SettingViewModel
 import java.util.*
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
