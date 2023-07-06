@@ -12,6 +12,7 @@ import com.example.socialnetwork.utils.LocaleHelper
 import com.example.socialnetwork.utils.ViewUtils
 import com.example.socialnetwork.viewmodels.RegistrationViewModel
 import com.google.android.material.snackbar.Snackbar
+import com.google.firebase.database.FirebaseDatabase
 import java.util.*
 
 class RegisterActivity : AppCompatActivity(R.layout.activity_register) {
